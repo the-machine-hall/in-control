@@ -1,0 +1,30 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../../config/config.tcl
+
+# For port configuration
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn -open [open $_serialPort w+]
+exp_stty raw < $_serialPort
+exp_stty ispeed $_serialBaudRate ospeed $_serialBaudRate raw -echo $_serialBits -parenb -cstopb onlcr < $_serialPort
+
+# Send CR to activate console. This is important, as otherwise the expect
+# command times out, which takes nearly 12 seconds.
+send "\r"
+
+expect "Username: "
+send "$_username\r"
+expect "Password: "
+send "$_password\r"
+
+expect "$_prompt"
+send "on $_outlet\r"
+expect "$_outlet: Outlet turned on."
+expect "$_prompt"
+send "exit\r"
+
+exit

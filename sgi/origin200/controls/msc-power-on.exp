@@ -1,0 +1,26 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn -open [open $_serialPort w+]
+exp_stty raw < $_serialPort
+exp_stty ispeed $_serialBaudRate ospeed $_serialBaudRate raw -echo $_serialBits -parenb -cstopb onlcr < $_serialPort
+
+# Enter supervisor mode
+# see "http://csweb.cs.wfu.edu/~torgerse/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Admin/books/Origin200_OG/sgi_html/ch04.html#id60346"
+# for details
+# Send Ctrl+t to enter command mode. See "http://ubuntuforums.org/showthread.php?t=1087889" for details.
+send "\x14"
+expect "MSC> "
+send "pas $_password\r"
+
+# Send actual command
+send "\x14"
+expect "MSC> "
+send "pwr u\r"
+
+exit
+

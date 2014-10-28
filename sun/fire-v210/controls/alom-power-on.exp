@@ -1,0 +1,21 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $hostname
+
+expect "Please login: "
+send "$username\r"
+expect "Please Enter password: "
+send "$password\r"
+
+expect "sc> "
+send "poweron\r"
+expect "sc> "
+send "logout\r"
+
+exit
+
