@@ -12,11 +12,11 @@ Each item of the inventory can be controlled or contains sub-items that can be c
 1. Download the [tarball] or clone this repository.
 2. Create a directory to contain your inventory items.  
    ```
-   ~$ mkdir $HOME/inventory && cd $HOME/inventory
+   ~$ mkdir inventory && cd inventory
    ```
 3. Create an item by copying an item template to your inventory.  
    ```
-   ~/inventory$ cp ../inventory-control/[...]/item-template my-item
+   ~/inventory$ cp -rd [...]/inventory-control/[...]/item-template my-item
    ```
 4. Adapt the configuration to your needs.  
    ```
