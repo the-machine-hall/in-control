@@ -1,0 +1,24 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $hostname
+
+expect "Please login: "
+send "$username\r"
+expect "Please Enter password: "
+send "$password\r"
+
+expect "rsc> "
+send "xir\r"
+expect "Are you sure you want to send a non-maskable interrupt (XIR) to your server (Yes/No)?  "
+send "yes\r"
+expect "rsc> "
+send "logout\r"
+
+exit
+
+
