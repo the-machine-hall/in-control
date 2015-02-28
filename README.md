@@ -62,7 +62,7 @@ This is done by abstracting the remote control functionality of various hardware
    ```
 3. Create an item by copying an item template to your inventory.  
    ```
-   ~/inventory$ cp -rd [...]/inventory-control/[...]/item-template my-item
+   ~/inventory$ cp -rd [...]/in-control/[...]/item-template my-item
    ```
 4. Adapt the configuration to your needs.  
    ```
