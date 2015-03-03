@@ -1,0 +1,38 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $hostname
+
+sleep 1
+
+#send "\r"
+
+expect "Please enter user name : "
+send "$username\r"
+expect "Please enter pass phrase : "
+send "$password\r"
+
+expect "Enter selection or (0) to quit: "
+send "2\r"
+
+expect "Enter selection or (0) to quit: "
+send "1\r"
+
+expect "Do you really want to power off (yes/no)? "
+send "yes\r"
+
+expect "Press any key to continue "
+send "\r"
+
+expect "Enter selection or (0) to quit: "
+send "0\r"
+
+expect "Enter selection or (0) to quit: "
+send "0\r"
+
+exit
+
