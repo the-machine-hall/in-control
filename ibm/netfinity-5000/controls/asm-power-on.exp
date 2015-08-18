@@ -1,0 +1,41 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For username and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn -open [open $_serialPort w+]
+exp_stty raw < $_serialPort
+exp_stty ispeed $_serialBaudRate ospeed $_serialBaudRate raw -echo $_serialBits -parenb -cstopb onlcr < $_serialPort
+
+# Send <ESC> to enter command mode. See "http://ubuntuforums.org/showthread.php?t=1087889" for details.
+send "\x1b"
+expect "USER ID:"
+send "$_username\r"
+
+expect "PASSWORD:"
+send "$_password\r"
+
+# This is needed, so that the password is sent without garbage.
+sleep 0.5
+
+# Send actual command
+# System Power
+send "6"
+# Power On
+send "4"
+# Power On Release CPU's Reset
+send "2"
+# Write
+send "0"
+# <ESC> => back to initial menu
+send "\x1b"
+# Disconnect Current Login
+send "y"
+# Write
+send "0"
+
+
+exit
+
