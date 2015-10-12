@@ -1,0 +1,32 @@
+#!/usr/bin/expect
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $hostname
+
+expect "MP login: $"
+send "$username\r"
+
+#sleep 1
+
+expect "MP password: $"
+send "$password\r"
+
+#sleep 1
+
+expect "MP> $"
+send "cm\r"
+
+expect "MP:CM> $"
+# reset without confirmation (`-nc`)
+send "rs -nc\r"
+
+expect "MP:CM> $"
+send "\x02"
+
+expect "MP> $"
+send "x\r"
+
+exit
+
