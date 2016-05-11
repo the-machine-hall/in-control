@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $hostname
+
+expect "Login Name:  "
+send "$username\r"
+expect "Password:    "
+send "$password\r"
+
+expect "</>hpiLO-> "
+# Although HP calls it "reset", it actually does power down the machine 
+# and powers it up again some seconds later, i.e. a power cycle in my
+# eyes.
+send "power reset\r"
+
+expect "</>hpiLO-> "
+send "quit\r"
+
+exit
+

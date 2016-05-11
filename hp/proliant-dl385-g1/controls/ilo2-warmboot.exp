@@ -1,0 +1,24 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $hostname
+
+expect "Login Name:  "
+send "$username\r"
+expect "Password:    "
+send "$password\r"
+
+expect "</>hpiLO-> "
+# HP calls this "warmboot". But it actually works like a "reset" on
+# other machines.
+send "power warm\r"
+
+expect "</>hpiLO-> "
+send "quit\r"
+
+exit
+
