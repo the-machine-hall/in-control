@@ -4,15 +4,15 @@ Remote control makes it possible to e.g. *power on*, *power off* or *reset* mach
 
 **A problem remains.**
 
-A lot of manufacturers use different and often incompatible remote control systems from a syntax point of view: E.g. there exists RSC, LOM, ALOM, ILOM (all SUN), iLO (HP), iRMC (Fujitsu(-Siemens)) and many more, and most of them use a different syntax, which makes it hard to interact with machines of different manufacturers at the same time.
+A lot of manufacturers use different and often incompatible remote control systems from a syntax point of view: E.g. there exists RSC, LOM, ALOM, ILOM (all Sun), iLO (HP), iRMC (Fujitsu(-Siemens)) and many more, and most of them use a different syntax, which makes it hard to interact with machines of different manufacturers at the same time.
 
 **See the problem?**
 
-Or can you remotely power on a SUN Fire V240, a HP Proliant DL385 G2, a Fujitsu-Siemens RX200 S3 or a SGI Origin 200 without studiyng the documentation first? And also think about the different connection mechanisms: Do you have to use a network connection and then was it `telnet` or `ssh` you have to use for login or do you have to use a serial connection for this specific machine?
+Or can you remotely power on a Sun Fire V240, a HP Proliant DL385 G2, a Fujitsu-Siemens RX200 S3 or a SGI Origin 200 without studying the documentation first? And also think about the different connection mechanisms: Do you have to use a network connection? And then was it `telnet` or `ssh` you have to use for login? Or do you have to use a serial connection for this specific machine?
 
 **In-control** tries to solve this dilemma by offering an easy to use and - most important - syntactically identical interface to the remote control functionality of various hardware. I.e. regardless of its manufacturer, if you want to power on a specific server machine, with **in-control** the command is `[...]/machine-1/controls/power-on` or if you want to reset it and the machine supports this action, the command is `[...]/machine-1/controls/reset` and so forth. Or if you need to switch on or switch off a specific power outlet of a PDU, the command is just `[...]/pdu-1/port_01/controls/on` or `[...]/pdu-1/port_01/controls/off`.
 
-This is done by abstracting the remote control functionality of various hardware (= inventory items) with a collection of scripts (written in `expect` and `bash` so far). Each item of the inventory can be controlled or contains sub-items that can be controlled. E.g. think about a PDU (item) with controllable power outlets (sub-items). Necessary configuration values (like IP addresses, serial ports, credentials, etc.) are stored in configuration files. Access to the configuration files can be limited with file system permissions or access control lists (ACLs).
+This is done by abstracting the remote control functionality of various hardware (=inventory items) with a collection of scripts (written in `expect` and `bash` so far). Each item of the inventory can be controlled or contains sub-items that can be controlled. E.g. think about a PDU (=item) with controllable power outlets (=sub-items). Necessary configuration values (like IP addresses, serial ports, credentials, etc.) are stored in configuration files. Access to the configuration files can be limited with file system permissions or access control lists (ACLs).
 
 **In-control** uses a simple directory tree for storage of configuration and controls, so you can easily group and subgroup particular items or whole collections of items (e.g. the machines in machine hall #1, all DNS server machines, etc.) by placing or symlinking them in subdirectories:
 
@@ -124,7 +124,7 @@ You can also "link" items by using symlinks. This way you can easily determine w
 
 (GPLv3)
 
-Copyright (C) 2014 Frank Scheiner
+Copyright (C) 2014-2016 Frank Scheiner
 
 The software is distributed under the terms of the GNU General Public License
 
