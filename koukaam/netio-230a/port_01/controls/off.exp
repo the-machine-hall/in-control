@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+# needs nc (netcat)!
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../../config/config.tcl
+
+# For port configuration
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn nc $_hostname $_port
+
+expect "100 HELLO*\r"
+send "login $_username $_password\r"
+
+expect "250 OK\r"
+send "port $_outlet 0\r"
+
+expect "250 OK\r"
+send "quit\r"
+
+exit
+
