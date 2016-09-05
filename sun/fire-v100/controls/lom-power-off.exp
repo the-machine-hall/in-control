@@ -1,0 +1,31 @@
+#!/usr/bin/expect
+
+# omit any output
+log_user 0
+
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn -open [open $_serialPort w+]
+exp_stty raw < $_serialPort
+exp_stty ispeed $_serialBaudRate ospeed $_serialBaudRate raw -echo $_serialBits -parenb -cstopb onlcr < $_serialPort
+
+# Send CR to activate console. This is important, as otherwise the
+# expect command times out, which takes nearly 12 seconds.
+send "\r"
+
+#expect "Username: "
+#send "$_username\r"
+#expect "Password: "
+#send "$_password\r"
+
+# Escape from console if active. This shouldn't be the case for
+# power-on, but by doing this anyhow we don't send commands to the OBP.
+# If already in the LOM, the `\r` makes sure that a `lom>` prompt is
+# there for the next command.
+send "#.\r"
+
+expect "$_prompt"
+send "poweroff\r"
+
+exit
+
