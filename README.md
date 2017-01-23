@@ -10,7 +10,7 @@ A lot of manufacturers use different and often incompatible remote control syste
 
 Or can you remotely power on a Sun Fire V240, a HP Proliant DL385 G2, a Fujitsu-Siemens RX200 S3 or a SGI Origin 200 without studying the documentation first? And also think about the different connection mechanisms: Do you have to use a network connection? And then was it `telnet` or `ssh` you have to use for login? Or do you have to use a serial connection for this specific machine?
 
-**In-control** tries to solve this dilemma by offering an easy to use and - most important - syntactically identical interface to the remote control functionality of various hardware. I.e. regardless of its manufacturer, if you want to power on a specific server machine, with **in-control** the command is `[...]/machine-1/controls/power-on` or if you want to reset it and the machine supports this action, the command is `[...]/machine-1/controls/reset` and so forth. Or if you need to switch on or switch off a specific power outlet of a PDU, the command is just `[...]/pdu-1/port_01/controls/on` or `[...]/pdu-1/port_01/controls/off`.
+**In-control** tries to solve this dilemma by offering an easy to use and - most important - syntactically identical interface to the remote control functionality of various hardware. I.e. regardless of its manufacturer, if you want to power on a specific server machine, with **in-control** the command is `[...]/machine-1/controls/[power-]on` or if you want to reset it and the machine supports this action, the command is `[...]/machine-1/controls/reset` and so forth. Or if you need to switch on or switch off a specific power outlet of a PDU, the command is just `[...]/pdu-1/port_01/controls/[power-]on` or `[...]/pdu-1/port_01/controls/[power-]off`.
 
 This is done by abstracting the remote control functionality of various hardware (=inventory items) with a collection of scripts (written in `expect` and `bash` so far). Each item of the inventory can be controlled or contains sub-items that can be controlled. E.g. think about a PDU (=item) with controllable power outlets (=sub-items). Necessary configuration values (like IP addresses, serial ports, credentials, etc.) are stored in configuration files. Access to the configuration files can be limited with file system permissions or access control lists (ACLs).
 
@@ -70,7 +70,7 @@ This is done by abstracting the remote control functionality of various hardware
    ```
 5. Control your gear by software.  
    ```
-   ~$ inventory/my-item/controls/power-on
+   ~$ inventory/my-item/controls/[power-]on
    ```
 
 > **NOTICE:** If your shell supports directory and filename completion, you can simply follow the directory tree and hit the completion key (usually the TAB key) to see your options during traversal.
@@ -97,7 +97,9 @@ A computer that can be powered on via [WOL] is connected to a power outlet of a 
 │   │       ├── off -> off.exp
 │   │       ├── off.exp
 │   │       ├── on -> on.exp
-│   │       └── on.exp
+│   │       ├── on.exp
+|   |       ├── power-off -> off.exp
+|   |       └── power-on -> on.exp
 [...]
 |
 ├── my-computer
@@ -105,13 +107,14 @@ A computer that can be powered on via [WOL] is connected to a power outlet of a 
 │   │   ├── config.bash
 │   │   └── power-source -> ../../my-pdu/port_02/
 │   └── controls
+|       ├── on -> wol-power-on.bash
 │       ├── power-on -> wol-power-on.bash
 │       └── wol-power-on.bash
 |
 [...]
 ```
 
-You can also "link" items by using symlinks. This way you can easily determine which outlet powers a specific machine or which machine is powered by a specfic outlet. Due to this linkage you can access the controls of a linked item in the context of the currently selected item:
+You can also "link" items by using symlinks (e.g. `used-by` and `power-source` in the above example). This way you can easily determine which outlet powers a specific machine or which machine is powered by a specfic outlet. Due to this linkage you can access the controls of a linked item in the context of the currently selected item:
 
 ```
 ~$ inventory/my-computer/config/power-source/controls/on
@@ -124,7 +127,7 @@ You can also "link" items by using symlinks. This way you can easily determine w
 
 (GPLv3)
 
-Copyright (C) 2014-2016 Frank Scheiner
+Copyright (C) 2014-2017 Frank Scheiner
 
 The software is distributed under the terms of the GNU General Public License
 
@@ -142,4 +145,3 @@ You should have received a [copy] of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 [copy]: /COPYING
-
