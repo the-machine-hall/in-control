@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+log_user 0
+
+# For user name and password
+source [file dirname [info script]]/../config/config.tcl
+
+exp_spawn telnet $_hostname $_xscfShellPort
+
+#sleep 1
+
+expect "login:"
+send "$_username\r"
+expect "Password:"
+send "$_password\r"
+
+expect "SCF> "
+send "power-on\r"
+expect "y/n*"
+send "y\r"
+
+expect "SCF> "
+send "exit\r"
+
+exit
